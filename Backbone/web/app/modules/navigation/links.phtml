@@ -1,0 +1,11 @@
+<ul>
+<?php 
+	$links = $this->getLinks();
+	/* @var $link MMS_Link */
+	foreach($links as $link)
+	{
+		$href = (!is_null($link->getModule())) ? "?module={$link->getModule()}&controller={$link->getController()}" : './';
+		echo "<a href='{$href}'><li>{$link->getLabel()}</li></a>";
+	}
+?>
+</ul>

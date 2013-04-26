@@ -1,0 +1,116 @@
+<?php
+class MMS_Model_ValueDrive
+{
+	private $teamId;
+	private $teamAliases;
+	private $driveSummary;
+	
+	/**
+	 * @param MMS_Model_DriveSummary $drive
+	 */
+	public function setDriveSummary( $drive )
+	{
+		$this->driveSummary = $drive;
+	}
+	
+	/**
+	 * @return MMS_Model_DriveSummary
+	 */
+	public function getDriveSummary()
+	{
+		return $this->driveSummary;
+	}
+	
+	public function __construct( $teamId )
+	{
+		$this->teamId = $teamId;
+		$this->teamAliases = MMS_Model_TeamAlias::SimpleAliasArrayByTeamId( $teamId );
+	}
+	
+	public function SaveValueDrive()
+	{
+		$insert = array();
+		$insert[ 'GameId' ] = $this->getDriveSummary()->getGameId();
+		$insert[ 'TeamId' ] = $this->teamId;
+		$insert[ 'DriveSummaryId' ] = $this->getDriveSummary()->getDriveSummaryId();
+		
+		$table = new MMS_Db_Table_NCAA_ValueDrive();
+
+		$w = array();
+		foreach ( $insert as $field => $value )
+		{
+			$w[] = "$field=$value";
+		}
+		$where = implode( ' AND ', $w );
+		
+		$row = $table->fetchRow( $where );
+		if ( $row )
+		{
+			/*
+			 * At this time, I am just going to set and return the primary key,
+			 * but in the future I may want to perform and update at this 
+			 * location in the code.
+			 */
+			$pk = $row->ValueDriveId;
+		}
+		else 
+		{
+			/*
+			 * Add the points to the insert array and do that thing.
+			 */
+			$insert[ 'Points' ] = $this->getDriveSummary()->getPoints();
+			$pk = $table->insert( $insert );
+		}
+		return $pk;
+	}
+	
+	/**
+	 * With the information provided, determine if a drive is a value drive. A
+	 * value drive is defined as starting on the far side of the 50 yard line 
+	 * and crossing the opponents 30 yard line.
+	 * 
+	 * @return boolean
+	 */
+	public function IsValueDrive()
+	{
+		/*
+		 * Get the necessary properties from the drive summary.
+		 */
+		$startSplit		= split( ' ', $this->getDriveSummary()->getBeginYard() );
+		$yardsGained	= $this->getDriveSummary()->getYardsGained();
+		$teamId			= $this->getDriveSummary()->getTeamId();
+
+		$startAlias = trim( $startSplit[0] );
+		if ( isset( $startSplit[1] ) )
+		{
+			$startYard = (int)trim( $startSplit[1] );
+		}
+		else 
+		{
+			$startYard = 50;
+		}
+		
+		$isValueDrive = false;
+		/*
+		 * The startSide should be a team alias. If it is one of the target
+		 * team's aliases, then the start was past the 50 yard line, which is
+		 * the first requirement in a value drive.
+		 */
+		if ( $this->teamId == $teamId )
+		{
+			if ( in_array( $startAlias, $this->teamAliases ) )
+			{
+				/*
+				 * If the starting yard plus yards gained passes the 30 yard line,
+				 * then this is a value drive.
+				 */
+				$endYard = 50 - ( $yardsGained - ( 50 - $startYard ) );
+				if ( $endYard <= 30 )
+				{
+					$isValueDrive = true;
+				}
+			}
+		}
+		return $isValueDrive;
+	}
+}

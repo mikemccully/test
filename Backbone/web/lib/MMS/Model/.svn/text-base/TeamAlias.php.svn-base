@@ -1,0 +1,141 @@
+<?php
+class MMS_Model_TeamAlias
+{
+	public static function TeamAliasByTeamId( $teamId )
+	{
+		$table = new MMS_Db_Table_NCAA_TeamAlias();
+		$select = $table->select();
+
+		$select->where( 'TeamId=' . $teamId );
+
+		$rows = $table->fetchAll( $select );
+		/* @var $value Zend_Db_Table_Row */
+		$list = array();
+		foreach ( $rows as $row )
+		{
+			$list[] = $row->toArray();
+		}
+		return $list;
+	}
+	
+	public static function SimpleAliasArrayByTeamId( $teamId )
+	{
+		$detailed = self::TeamAliasByTeamId( $teamId );
+		$simple = array();
+		/*
+		 * We are going us in_array, so we don't need the other values that are
+		 * returned in the array. We will make an array of just values.
+		 */
+		foreach ( $detailed as $alias )
+		{
+			$simple[] = $alias['Alias'];
+		}
+		return $simple;
+	}
+	
+	/**
+	 * Given a conference id, produce an array of aliases that are suggestions
+	 * to be saved to the alias table.
+	 * @param unknown_type $conferenceId
+	 */
+	public static function SuggestedTeamAliases( $teamId )
+	{
+		$drives = MMS_Model_DriveSummary::DriveSummaryByTeamId( $teamId );
+		$aliases = self::TeamAliasByTeamId( $teamId );
+
+		$justTheAlias = array();
+		/*
+		 * We are going us in_array, so we don't need the other values that are
+		 * returned in the array. We will make an array of just values.
+		 */
+		foreach ( $aliases as $alias )
+		{
+			$justTheAlias[] = $alias['Alias'];
+		}
+		/*
+		 * Loop through the drives and determine the possible aliases for each 
+		 * week. Save those values in an array keyed on week.
+		 */
+		$weekAliases = array();
+		/* @var $drive MMS_Model_DriveSummary */
+		foreach ( $drives as $drive )
+		{
+			$split	= split( ' ', $drive->getBeginYard() );
+			$week	= $drive->getWeek();
+			if ( !isset( $weekAliases[ $week ] ) )
+			{
+				$weekAliases[ $week ] = array();
+			}
+			if ( count( $split ) > 1 )
+			{
+				$possible = $split[0];
+				if ( !in_array( $possible, $weekAliases[ $week ] ) )
+				{
+					$weekAliases[ $week ][] = $possible;
+				}
+			}
+		}
+
+		/*
+		 * Look at the weekly possibilities and create a count of each option.
+		 */
+		$suggestions = array();
+		foreach ( $weekAliases as $week )
+		{
+			foreach ( $week as $possible )
+			{
+				if ( trim( $possible ) )
+				{
+					if ( !isset( $suggestions[ $possible ] ) )
+					{
+						$suggestions[ $possible ] = 0;
+					}
+					$suggestions[ $possible ]++;
+				}
+			}
+		}
+		/*
+		 * Sort the array and pop off the key with the top count.
+		 */ 
+		$value = '';
+		asort( $suggestions, SORT_NUMERIC );
+		if ( end( $suggestions ) > 2 )
+		{
+			$maybe = array_pop( array_keys( $suggestions ) );
+			if ( !in_array( $maybe, $justTheAlias ) )
+			{
+				$value = $maybe;
+			}
+		}
+		return $value;
+	}
+	
+	/**
+	 * Given the teamid and the alias, this will insert into the table and
+	 * return the primary key.
+	 * 
+	 * @param int $teamId
+	 * @param string $alias
+	 * 
+	 * @return int
+	 */
+	public static function SaveTeamAlias( $teamId, $alias )
+	{
+		$insert[ 'TeamId' ] = $teamId;
+		$insert[ 'Alias' ] = $alias;
+
+		$table = new MMS_Db_Table_NCAA_TeamAlias();
+		
+		$where = "TeamId={$teamId} AND Alias='{$alias}'";
+		$row = $table->fetchRow( $where );
+		if ( $row )
+		{
+			$pk = $row->TeamAliasId;
+		}
+		else 
+		{
+			$pk = $table->insert( $insert );
+		}
+		return $pk;
+	}
+}

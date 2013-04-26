@@ -1,0 +1,93 @@
+@CHARSET "ISO-8859-1";
+
+body
+{
+	font-family: arial, helvetica, sans-serif;
+	font-size: 1.0em;
+	width: 100%;
+	min-width: 1000px;
+	height: 100%;
+}
+
+h1, h2, h3, h4, h5
+{
+	font-weight: bold;
+}
+
+h1
+{
+	font-size: 2.0em;
+}
+
+h2
+{
+	font-size: 1.8em;
+}
+
+h3
+{
+	font-size: 1.6em;
+}
+
+h4
+{
+	font-size: 1.4em;
+}
+
+h5
+{
+	font-size: 1.2em;
+}
+
+#headerContainer
+{
+	height: 30px;
+	line-height: 30px;
+	vertical-align: middle;
+	overflow: none;
+}
+
+#navContainer,
+#footerContainer
+{
+	height: 25px;
+	line-height: 25px;
+	overflow: none;
+}
+
+#contentContainer
+{
+	height:100%;
+	overflow: auto;
+}
+
+.link
+{
+	color: blue;
+	cursor: pointer;
+	font-style: italic;
+}
+
+.border
+{
+	border: 1px solid black;
+}
+
+.outerMargin
+{
+	margin: 2px;
+}
+
+#headerContainer .title
+{
+	float: left;
+	font-weight:bold;
+	margin-left: 15px;
+}
+
+#headerContainer .teamLabel
+{
+	float: right;
+	font-weight: bold;
+	margin-right: 15px;
+}
