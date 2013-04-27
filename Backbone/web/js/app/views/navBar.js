@@ -1,18 +1,17 @@
 define(
 	[
 	 'libs/backbone',
-	 'models/header',
-	 'libs/text!templates/header.html'
+	 'models/navBar',
+	 'libs/text!templates/navBar.html'
 	],
-	function (Backbone, HeaderModel, tpl) {
+	function (Backbone, NavBarModel, tpl) {
 		
-		var headerView = Backbone.View.extend({
+		var NavView = Backbone.View.extend({
 			
 			template: _.template(tpl),
-			model: new HeaderModel(),
+			model: new NavBarModel(),
 
 			initialize: function (attributes, options) {
-				this.model.on('change:team', this.render, this);
 				this.model.on('change:team', this.setBackgroundColor, this);
 			},
 			
@@ -32,6 +31,6 @@ define(
 			}
 		});
 		
-		return headerView;
+		return NavView;
 	}
 );

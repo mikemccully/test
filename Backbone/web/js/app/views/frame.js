@@ -2,32 +2,46 @@ define(
 	[
 	 'libs/backbone',
 	 'libs/text!templates/frame.html',
-	 'models/header',
-	 'views/header'
+	 'models/frame',
+	 'views/header',
+	 'views/navBar'
 	],
-	function (Backbone, frameTpl, HeaderModel, HeaderView) {
+	function (Backbone, frameTpl, FrameModel, HeaderView, NavBarView) {
 
 		var FrameView = Backbone.View.extend({
 
 			el: 'body',
 			template: _.template(frameTpl),
-			headerView: null,
-			
+			model: new FrameModel(),
+			headerView: {},
+			navBarView: {},
+
+			initialize: function (attributes, options) {
+
+				this.model.on('change:team', this.handler_teamChange, this);
+			},
+
 			render: function () {
+
 				this.$el.html(this.template());
 
-				var headerModel = new HeaderModel();
-				var headerAttr = {
-						el: this.$('#headerContainer'),
-						model: headerModel
-				};
-				this.headerView = new HeaderView(headerAttr);
+				this.headerView = new HeaderView({el:this.$('#headerContainer')});
 				this.headerView.render();
 
+				this.navBarView = new NavBarView({el:this.$('#navContainer')});
+				this.navBarView.render();
+
 				return this;
+			},
+
+			handler_teamChange: function (model) {
+
+				var team = model.get('team');
+				this.headerView.model.set('team', team);
+				this.navBarView.model.set('team', team);
 			}
 		});
-		
+
 		return FrameView;
 	}
 );
