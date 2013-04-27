@@ -7,8 +7,10 @@ define(
 		var teamModel = Backbone.Model.extend({
 			
 			defaults: {
-				"location": "Town",
-				"name": "Name",
+				"TeamId": "0",
+				"City": "Town",
+				"State": "Anywhere",
+				"TeamName": "Name",
 				"headerBGColor": "yellow",
 				"headerColor": "black"
 			}

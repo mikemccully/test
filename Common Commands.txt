@@ -1,6 +1,7 @@
+// To change a team from the command line
 attr = {
-	"location": "Houston",
-	"name": "Texans",
+	"City": "Houston",
+	"TeamName": "Texans",
 	"headerBGColor": "#000077",
 	"headerColor": "#EE0000"
 };
@@ -9,5 +10,7 @@ t = new (require('models/team'))(attr);
 App.frame.model.set('team', t);
 
 t = new (require('models/team'))(attr);
-App.frame.headerView.model.set('team', t);
+App.frame.model.set('team', t);
 
+// Url to request data
+http://localhost/backbone/index.php?module=teamData&controller=league&raw=

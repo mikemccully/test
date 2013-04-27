@@ -19,6 +19,7 @@ define(
 			initialize: function (attributes, options) {
 
 				this.model.on('change:team', this.handler_teamChange, this);
+				this.model.get('teams').on('add', this.handler_teamsLoaded, this);
 			},
 
 			render: function () {
@@ -32,6 +33,11 @@ define(
 				this.navBarView.render();
 
 				return this;
+			},
+
+			handler_teamsLoaded: function (model) {
+
+				this.navBarView.model.set('teams', this.model.get('teams'));
 			},
 
 			handler_teamChange: function (model) {

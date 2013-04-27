@@ -6,9 +6,11 @@ define(
 	function (Backbone, TeamModel) {
 		
 		var NavModel = Backbone.Model.extend({
-			
+
 			defaults: {
-				"team": new TeamModel()
+				"team": new TeamModel(),
+				"teams": [],
+				"teamOptions": ""
 			}
 		});
 		
