@@ -6,7 +6,7 @@ attr = {
 };
 
 t = new (require('models/team'))(attr);
-App.frame.headerView.model.set('team', t);
+App.frame.model.set('team', t);
 
 t = new (require('models/team'))(attr);
 App.frame.headerView.model.set('team', t);
