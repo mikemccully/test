@@ -20,7 +20,7 @@ requirejs(['router', 'views/frame'], function (router, FrameView) {
 		var headerHt = $('#headerContainer').outerHeight();
 		var navHt = $('#navContainer').outerHeight();
 		var footHt = $('#footerContainer').outerHeight();
-		var windowHt = $('body').height();
+		var windowHt = window.innerHeight;
 		var contentHt = windowHt - (navHt + headerHt + footHt + 14);
 		$('#contentContainer').innerHeight(contentHt);
 	};
