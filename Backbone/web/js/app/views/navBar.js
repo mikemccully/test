@@ -2,9 +2,10 @@ define(
 	[
 	 'libs/backbone',
 	 'models/navBar',
-	 'libs/text!templates/navBar.html'
+	 'libs/text!templates/navBar.html',
+	 'widgets/dropDownSelect'
 	],
-	function (Backbone, NavBarModel, tpl) {
+	function (Backbone, NavBarModel, tpl, SelectWidget) {
 		
 		var NavView = Backbone.View.extend({
 			
@@ -12,19 +13,30 @@ define(
 			model: new NavBarModel(),
 
 			initialize: function (attributes, options) {
+				
 				this.model.on('change:team', this.setBackgroundColor, this);
 				this.model.on('change:teams', this.render, this);
-			},
-			
-			render: function () {
 
 				/*
-				 * Build the option elements to place in the select.
+				 * Create the widget for the team select.
 				 */
-				this.buildTeamOptions();
-				
+				var selectView = new SelectWidget();
+				selectView.setIdPropertyName('TeamId');
+				selectView.setLabelPropertyName('TeamName');
+				this.model.set('teamSelect', selectView);
+			},
+
+			render: function () {
+
 				this.$el.html(this.template(this.model.attributes));
 				this.setBackgroundColor(this.model);
+
+				/*
+				 * We need to add the $el attribute at this point because we 
+				 * had to wait until the template was rendered.
+				 */
+				this.model.get('teamSelect').$el = this.$('.selectContainer');
+				this.model.get('teamSelect').setCollection(this.model.get('teams'));
 				
 				return this;
 			},
@@ -36,17 +48,6 @@ define(
 						"color": team.get('headerColor')
 				}
 				this.$el.css(cssConfig);
-			},
-			
-			buildTeamOptions: function () {
-				var options = '';
-				var teams = this.model.get('teams');
-				if (teams.length > 0) {
-					_.each(teams.models, function (team) {
-						options += '<option>' + team.get('TeamName') + '</option>';
-					});
-				}
-				this.model.set('teamOptions', options);
 			}
 		});
 		

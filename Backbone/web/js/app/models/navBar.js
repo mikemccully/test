@@ -10,7 +10,7 @@ define(
 			defaults: {
 				"team": new TeamModel(),
 				"teams": [],
-				"teamOptions": ""
+				"teamSelect": {} // This is for the dropDownSelect view.
 			}
 		});
 		

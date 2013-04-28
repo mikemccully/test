@@ -91,3 +91,34 @@ h5
 	font-weight: bold;
 	margin-right: 15px;
 }
+
+#navContainer .tabContainer
+{
+	float: left;
+	margin-left: 15px;
+}
+
+#navContainer .tabContainer ul
+{
+	margin-top:5px;
+	margin-bottom:0px;
+}
+
+#navContainer .tabContainer li
+{
+	float:left;
+	border: 1px solid black;
+	border-bottom: none;
+	padding-left: 5px;
+	padding-right: 5px;
+	line-height: 19px;
+	cursor: pointer;
+	margin-right: 2px;
+	margin-left: 2px;
+}
+
+#navContainer .selectContainer
+{
+	float: right;
+	margin-right: 15px;
+}
