@@ -11,8 +11,9 @@ define(
 				"City": "Town",
 				"State": "Anywhere",
 				"TeamName": "Name",
-				"headerBGColor": "yellow",
-				"headerColor": "black"
+				"AreaName": "Name",
+				"BackColor": "yellow",
+				"ForeColor": "black"
 			}
 		});
 		

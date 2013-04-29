@@ -25,8 +25,8 @@ define(
 			setBackgroundColor: function (model) {
 				var team = model.get('team');
 				var cssConfig = {
-						"background-color": team.get('headerBGColor'),
-						"color": team.get('headerColor')
+						"background-color": team.get('BackColor'),
+						"color": team.get('ForeColor')
 				}
 				this.$el.css(cssConfig);
 			}

@@ -64,7 +64,9 @@ define(
 					}
 				}
 				var selected	= collection.find(finder, selected);
-				this.model.set('selected', selected);
+				if (selected instanceof Object) {
+					this.model.set('selected', selected);
+				}
 			},
 
 			buildOptions: function () {

@@ -16,6 +16,7 @@ define(
 				
 				this.model.on('change:team', this.setBackgroundColor, this);
 				this.model.on('change:teams', this.render, this);
+				this.model.once('change:teams', this.triggerFirstTeam, this);
 
 				/*
 				 * Create the widget for the team select.
@@ -45,12 +46,16 @@ define(
 			setBackgroundColor: function (model) {
 				var team = model.get('team');
 				var cssConfig = {
-						"background-color": team.get('headerBGColor'),
-						"color": team.get('headerColor')
+						"background-color": team.get('BackColor'),
+						"color": team.get('ForeColor')
 				}
 				this.$el.css(cssConfig);
 			},
-			
+
+			triggerFirstTeam: function () {
+				this.model.get('teamSelect').$('select').trigger('change');
+			},
+
 			handler_selectedTeamChanged: function (model) {
 				this.trigger('teamUpdate', model.get('selected'));
 			} 
