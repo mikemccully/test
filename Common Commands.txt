@@ -12,5 +12,6 @@ App.frame.model.set('team', t);
 t = new (require('models/team'))(attr);
 App.frame.model.set('team', t);
 
-// Url to request data
-http://localhost/backbone/index.php?module=teamData&controller=league&raw=
+x = event.target.value
+
+

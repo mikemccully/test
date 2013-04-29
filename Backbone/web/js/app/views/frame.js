@@ -30,6 +30,8 @@ define(
 				this.headerView.render();
 
 				this.navBarView = new NavBarView({el:this.$('#navContainer')});
+				this.navBarView.off('teamUpdate');
+				this.navBarView.on('teamUpdate', this.handler_navBarTeamUpdate, this);
 				this.navBarView.render();
 
 				return this;
@@ -38,6 +40,10 @@ define(
 			handler_teamsLoaded: function (model) {
 
 				this.navBarView.model.set('teams', this.model.get('teams'));
+			},
+			
+			handler_navBarTeamUpdate: function (model) {
+				this.model.set('team', model);
 			},
 
 			handler_teamChange: function (model) {

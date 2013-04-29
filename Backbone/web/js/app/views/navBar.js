@@ -24,6 +24,7 @@ define(
 				selectView.setIdPropertyName('TeamId');
 				selectView.setLabelPropertyName('TeamName');
 				this.model.set('teamSelect', selectView);
+				selectView.model.on('change:selected', this.handler_selectedTeamChanged, this);
 			},
 
 			render: function () {
@@ -48,7 +49,11 @@ define(
 						"color": team.get('headerColor')
 				}
 				this.$el.css(cssConfig);
-			}
+			},
+			
+			handler_selectedTeamChanged: function (model) {
+				this.trigger('teamUpdate', model.get('selected'));
+			} 
 		});
 		
 		return NavView;

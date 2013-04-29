@@ -11,7 +11,8 @@ define(
 				"collection": {},
 				"idProperty": "id",
 				"labelProperty": "name",
-				"options": ''
+				"options": '',
+				"selected": {}
 			}
 		});
 

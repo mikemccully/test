@@ -23,6 +23,7 @@ define(
 
 			initialize: function (attributes, options) {
 				this.model.on('change:collection', this.render, this);
+				_.bindAll(this);
 			},
 			
 			setCollection: function (collection) {
@@ -43,10 +44,29 @@ define(
 				this.buildOptions();
 
 				this.$el.html(this.template(this.model.attributes));
+				this.$('select').on('change', this.handler_elementChanged);
 				
 				return this;
 			},
-			
+
+			/**
+			 * Get the object of the selected team and set it in the model, so
+			 * that is can be monitored by a listener and trigger any updates
+			 */
+			handler_elementChanged: function (event) {
+				var val 		= event.target.value;
+				var collection	= this.model.get('collection');
+				var property	= this.model.get('idProperty');
+				var selected	= {id:property, value:val};
+				var finder		= function (a,b,c) {
+					if (a.get(this.id) == this.value) {
+						return a;
+					}
+				}
+				var selected	= collection.find(finder, selected);
+				this.model.set('selected', selected);
+			},
+
 			buildOptions: function () {
 				var options = '';
 				var items = this.model.get('collection');
