@@ -31,7 +31,6 @@ requirejs(['router', 'views/frame'], function (router, FrameView) {
 	var loadFrame = function () {
 
 		App.frame = new FrameView();
-		App.frame.model.get('teams').fetch()
 		App.frame.render();
 	};
 

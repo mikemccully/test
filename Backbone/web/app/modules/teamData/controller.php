@@ -113,4 +113,13 @@ class TeamData_Controller extends MMS_Controller
 		
 		$this->view->weeks = json_encode( $rows->toArray() );
 	}
+	
+	public function teamConfig()
+	{
+		require_once '/MMS/Db/Table/Football/TeamConfig.php';
+		$table = new MMS_Db_Table_Football_TeamConfig();
+		$rows = $table->fetchAll();
+		
+		$this->view->config = json_encode( $rows->toArray() );
+	}
 }

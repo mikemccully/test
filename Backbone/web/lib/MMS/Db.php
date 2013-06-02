@@ -33,9 +33,9 @@ class MMS_Db extends Zend_Db
 		 * Local
 		 */
 		$config['dbname'] = 'mccully_football';
-		$config['username'] = 'root';
+		$config['username'] = 'mike';
 		$config['password'] = 'LtLh2motM!';
-		$config['host'] = '127.0.0.1';
+		$config['host'] = 'Mike-PC';
 		return $config;
 	}
 
