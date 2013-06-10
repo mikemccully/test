@@ -5,7 +5,8 @@ define(
 	function (Backbone) {
 		
 		var configModel = Backbone.Model.extend({
-			
+
+			idAttribute: "TeamId",
 			defaults: {
 				"TeamConfigId": "0",
 				"TeamId": "0",

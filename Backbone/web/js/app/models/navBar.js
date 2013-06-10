@@ -8,8 +8,6 @@ define(
 		var NavModel = Backbone.Model.extend({
 
 			defaults: {
-				"team": new TeamModel(),
-				"teams": [],
 				"teamSelect": {} // This is for the dropDownSelect view.
 			}
 		});

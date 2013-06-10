@@ -12,13 +12,13 @@ define(
 			model: new HeaderModel(),
 
 			initialize: function (attributes, options) {
-				this.model.on('change:team', this.render, this);
-				this.model.on('change:team', this.setBackgroundColor, this);
+				App.frame.model.on('change:team', this.render, this);
+				App.frame.model.on('change:team', this.setBackgroundColor, this);
 			},
 			
 			render: function () {
 				this.$el.html(this.template(this.model.attributes));
-				this.setBackgroundColor(this.model);
+				this.setBackgroundColor(App.frame.model);
 				return this;
 			},
 			

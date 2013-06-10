@@ -5,7 +5,8 @@ define(
 	function (Backbone) {
 		
 		var teamModel = Backbone.Model.extend({
-			
+
+			idAttribute: "TeamId",
 			defaults: {
 				"TeamId": "0",
 				"City": "Town",

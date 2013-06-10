@@ -14,9 +14,8 @@ define(
 
 			initialize: function (attributes, options) {
 				
-				this.model.on('change:team', this.setBackgroundColor, this);
-				this.model.on('change:teams', this.render, this);
-				this.model.once('change:teams', this.triggerFirstTeam, this);
+				App.frame.model.on('change:team', this.setBackgroundColor, this);
+				this.on('teamsLoaded', this.render, this);
 
 				/*
 				 * Create the widget for the team select.
@@ -31,14 +30,14 @@ define(
 			render: function () {
 
 				this.$el.html(this.template(this.model.attributes));
-				this.setBackgroundColor(this.model);
+				this.setBackgroundColor(App.frame.model);
 
 				/*
 				 * We need to add the $el attribute at this point because we 
 				 * had to wait until the template was rendered.
 				 */
 				this.model.get('teamSelect').$el = this.$('.selectContainer');
-				this.model.get('teamSelect').setCollection(this.model.get('teams'));
+				this.model.get('teamSelect').setCollection(App.frame.model.get('teams'));
 				
 				return this;
 			},

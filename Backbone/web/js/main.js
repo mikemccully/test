@@ -36,7 +36,7 @@ requirejs(['router', 'views/frame'], function (router, FrameView) {
 
 	window.App = {};
 	loadFrame();
-	var app = new router();
+	App.router = new router();
 	Backbone.history.start();
 	window.onresize();
 });
