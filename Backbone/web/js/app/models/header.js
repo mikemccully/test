@@ -9,7 +9,8 @@ define(
 			
 			defaults: {
 				"title": "My Backbone Project",
-				"team": new TeamModel()
+				"teamLocation": "Name",
+				"teamName": "Name"
 			}
 		});
 		

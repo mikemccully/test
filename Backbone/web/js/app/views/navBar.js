@@ -11,11 +11,14 @@ define(
 			
 			template: _.template(tpl),
 			model: new NavBarModel(),
+			dispatcher: {},
 
 			initialize: function (attributes, options) {
-				
-				App.frame.model.on('change:team', this.setBackgroundColor, this);
-				this.on('teamsLoaded', this.render, this);
+
+				this.dispatcher = attributes.dispatcher;
+
+				this.dispatcher.on('teamChanged', this.setBackgroundColor, this);
+				this.dispatcher.on('teamsLoaded', this.setTeamsCollectionInSelect, this);
 
 				/*
 				 * Create the widget for the team select.
@@ -25,6 +28,8 @@ define(
 				selectView.setLabelPropertyName('TeamName');
 				this.model.set('teamSelect', selectView);
 				selectView.model.on('change:selected', this.handler_selectedTeamChanged, this);
+				
+				this.render();
 			},
 
 			render: function () {
@@ -37,13 +42,23 @@ define(
 				 * had to wait until the template was rendered.
 				 */
 				this.model.get('teamSelect').$el = this.$('.selectContainer');
-				this.model.get('teamSelect').setCollection(App.frame.model.get('teams'));
 				
 				return this;
 			},
-			
-			setBackgroundColor: function (model) {
-				var team = model.get('team');
+
+			setTeamsCollectionInSelect: function (teams) {
+
+				var selectEl = this.model.get('teamSelect');
+				selectEl.setCollection( teams );
+				/*
+				 * This is needed to trigger a change that will set the 
+				 * properties of the first element in the set.
+				 */
+				selectEl.$('select').trigger('change');
+			},
+
+			setBackgroundColor: function (team) {
+
 				var cssConfig = {
 						"background-color": team.get('BackColor'),
 						"color": team.get('ForeColor')
@@ -51,12 +66,9 @@ define(
 				this.$el.css(cssConfig);
 			},
 
-			triggerFirstTeam: function () {
-				this.model.get('teamSelect').$('select').trigger('change');
-			},
-
 			handler_selectedTeamChanged: function (model) {
-				this.trigger('teamUpdate', model.get('selected'));
+
+				this.dispatcher.trigger('teamUpdate', model.get('selected'));
 			} 
 		});
 		
