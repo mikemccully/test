@@ -16,7 +16,11 @@ requirejs.config({
 
 requirejs(['libs/backbone', 'views/frame'], function (Backbone, FrameView) {
 
+	var dispatcher = _.extend( {}, Backbone.Events );
+	window.App = {};
+
 	window.onresize = function () {
+
 		var headerHt = $('#headerContainer').outerHeight();
 		var navHt = $('#navContainer').outerHeight();
 		var footHt = $('#footerContainer').outerHeight();
@@ -24,8 +28,6 @@ requirejs(['libs/backbone', 'views/frame'], function (Backbone, FrameView) {
 		var contentHt = windowHt - (navHt + headerHt + footHt + 14);
 		$('#contentContainer').innerHeight(contentHt);
 	};
-
-	var dispatcher = _.extend( {}, Backbone.Events );
 
 	/**
 	 * Initialize and render the page frame.
@@ -36,9 +38,7 @@ requirejs(['libs/backbone', 'views/frame'], function (Backbone, FrameView) {
 		App.frame.render();
 	};
 
-	window.App = {};
 	loadFrame();
-
 	Backbone.history.start();
 	window.onresize();
 });
